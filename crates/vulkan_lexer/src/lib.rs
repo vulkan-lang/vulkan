@@ -13,6 +13,7 @@ impl<'input> Lexer<'input> {
         Self(CharStream::new(input))
     }
 
+    #[inline]
     pub fn advance(&mut self) -> Token {
         self.match_token()
     }
@@ -60,6 +61,7 @@ impl<'input> Lexer<'input> {
         }
         Token::new(TokenKind::EOF, self.0.offset(), self.0.offset())
     }
+
     #[inline]
     fn match_keyword(&mut self) -> Token {
         let start = self.0.offset();
@@ -115,20 +117,26 @@ impl<'input> Lexer<'input> {
     }
 
     #[inline]
+    #[rustfmt::skip]
     pub fn is_whitespace(r#char: char) -> bool {
         matches!(
             r#char,
             '\u{0009}'
-                | '\u{000A}'
-                | '\u{000B}'
-                | '\u{000C}'
-                | '\u{000D}'
-                | '\u{0020}'
-                | '\u{0085}'
-                | '\u{00A0}'
-                | '\u{1680}'
-                | '\u{2000}'
-                ..='\u{200A}' | '\u{2028}' | '\u{2029}' | '\u{202F}' | '\u{205F}' | '\u{3000}'
+            | '\u{000A}'
+            | '\u{000B}'
+            | '\u{000C}'
+            | '\u{000D}'
+            | '\u{0020}'
+            | '\u{0085}'
+            | '\u{00A0}'
+            | '\u{1680}'
+            | '\u{2000}'
+            ..='\u{200A}'
+            | '\u{2028}'
+            | '\u{2029}'
+            | '\u{202F}'
+            | '\u{205F}'
+            | '\u{3000}'
         )
     }
 }

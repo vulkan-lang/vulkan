@@ -1,0 +1,5 @@
+use std:io/macros::println;
+
+fn main() {
+    println("Hello, World!");
+}

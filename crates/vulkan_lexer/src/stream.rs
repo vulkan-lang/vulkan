@@ -11,7 +11,6 @@ pub struct CharStream<'input> {
 const NULL: char = '\0';
 
 impl<'input> CharStream<'input> {
-    #[inline]
     pub fn new(input: &'input str) -> Self {
         let mut iter = input.chars();
         let next = iter.next();
