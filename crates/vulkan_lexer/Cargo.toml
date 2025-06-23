@@ -1,0 +1,9 @@
+[package]
+name = "vulkan_lexer"
+version = "0.0.1-a-r1"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]

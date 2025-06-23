@@ -1,0 +1,10 @@
+[workspace]
+resolver = "3"
+members = ["crates/vulkan_lexer"]
+
+[workspace.package]
+authors = ["Zefir Rhu <zefirrhu@gmail.com>"]
+edition = "2024"
+license = "Apache-2.0"
+repository = "https://github.com/vulkan-lang/vulkan"
+
