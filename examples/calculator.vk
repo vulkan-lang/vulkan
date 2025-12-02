@@ -1,0 +1,89 @@
+@if(feature.list.mixin)
+feature mixin;
+
+use std:io/macros::{ print, println, eprintln, read_stdin };
+use std:process;
+
+class Calculator {
+    var last_result: usize = 0;
+
+    fn add(&mut self, a: usize, b: usize): usize {
+        self.last_result = a + b;
+        return self.last_result;
+    }
+
+    fn subtract(&mut self, a: usize, b: usize): isize {
+        return a as isize - b as isize;
+    }
+
+    fn multiply(&mut self, a: usize, b: usize): usize {
+        self.last_result = a * b;
+        return self.last_result;
+    }
+
+    fn divide(&mut self, a: usize, b: usize): Option<usize> {
+        if b != 0 { Some(a / b) } else { None }
+    }
+}
+
+@if(feature.mixin)
+mixin LutherEasterEgg for Calculator {
+    pub fn check_easter_egg(&self, a: usize, b: usize) {
+        match (a, b) {
+            (1517, 1521) | (1521, 1517) => {
+                println("Here I stand; I can do no other. God help me. Amen.");
+                println("- Martin Luther, 1521");
+            }
+            _ => {}
+        }
+    }
+
+    inject(at HEAD) fn add(&mut self, a: usize, b: usize) {
+        self.check_easter_egg(a, b);
+    }
+
+    inject(at HEAD) fn subtract(&mut self, a: usize, b: usize) {
+        self.check_easter_egg(a, b);
+    }
+
+    inject(at HEAD) fn multiply(&mut self, a: usize, b: usize) {
+        self.check_easter_egg(a, b);
+    }
+
+    inject(at HEAD) fn divide(&mut self, a: usize, b: usize) {
+        self.check_easter_egg(a, b);
+    }
+}
+
+fn main() {
+    var calc = Calculator();
+    println("Welcome to Vulkan Calculator!");
+    println("Enter two numbers separated by space (or 'quit' to exit):");
+
+    loop {
+        print("> ");
+
+        val nums = read_stdin!(class=num@usize, count=2, sep=' ',
+            err = |inv| {
+                if inv.eq_ignore_ascii_case("quit") {
+                    println("Goodbye!");
+                    process::exit(0);
+                } else {
+                    eprintln(f"Invalid number: {inv}");
+                }
+            }
+        );
+
+        val a = nums[0];
+        val b = nums[1];
+
+        println(f"Sum: {calc.add(a, b)}");
+        println(f"Difference: {calc.subtract(a, b)}");
+        println(f"Product: {calc.multiply(a, b)}");
+
+        match calc.divide(a, b) {
+            Some(q) => println(f"Quotient: {q}"),
+            None => eprintln("Quotient: division by zero is impossible!")
+        }
+    }
+}
